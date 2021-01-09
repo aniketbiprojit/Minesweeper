@@ -38,8 +38,9 @@ class Cell {
 
 	reveal() {
 		this.block.classList.remove('hidden')
-
 		if (this.bomb) {
+			this.setInner('B')
+		} else if (this.neighbours === 0) {
 			this.setInner('')
 		} else this.setInner(this.neighbours.toString())
 	}
