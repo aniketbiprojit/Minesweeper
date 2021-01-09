@@ -20,10 +20,25 @@ grid_elem.style.width = Math.floor(cell_size * cols).toString() + 'px'
 const grid: Array<Array<Cell>> = Array.from(Array(rows), () => new Array(cols))
 
 class Cell {
-	revealed = false
+	visible = false
+	bomb = false
 	block: HTMLElement
 	constructor(block: HTMLElement) {
 		this.block = block
+
+		if (Math.random() < 0.2) {
+			this.bomb = true
+			this.block.classList.add('bomb')
+		}
+	}
+
+	reveal() {
+		this.visible = true
+		this.block.classList.add('revealed')
+	}
+
+	setInner(text: string) {
+		this.block.innerHTML = text
 	}
 }
 

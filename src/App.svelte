@@ -21,9 +21,19 @@
 	.cell > p {
 		margin: 0;
 	}
+
+	.bomb {
+		background-color: red;
+	}
+
+	.revealed {
+		background-color: blue;
+	}
 </style>
 
 <main>
+	<span class="revealed" />
+	<span class="bomb" />
 	<div class="grid" id="grid">
 		{#each Array(rows) as _, i}
 			{#each Array(cols) as _, j}
