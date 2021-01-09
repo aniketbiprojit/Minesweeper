@@ -1,4 +1,4 @@
 ## MineSweeper
 
--   WIP
+-   Live Site: https://git.aniketbiprojit.me/Minesweeper/
 <!--  -->
