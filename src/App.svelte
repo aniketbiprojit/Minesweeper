@@ -31,7 +31,7 @@
 	}
 
 	.bomb {
-		background-color: rgb(34, 34, 34);
+		background-color: white;
 	}
 
 	.hidden {
@@ -43,6 +43,7 @@
 	<span class="hidden" />
 	<span class="bomb" />
 	<span class="blue" />
+	<h1>Minesweeper</h1>
 	<div class="grid" id="grid">
 		{#each Array(rows) as _, i}
 			{#each Array(cols) as _, j}
