@@ -1,30 +1,36 @@
 <script lang="ts">
-	export let name: string;
+	export let rows: number, cols: number
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
-
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
+	.grid {
+		display: flex;
+		flex-wrap: wrap;
+		width: 400px;
+		height: 400px;
+		background-color: white;
 	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
+	.cell {
+		width: 38px;
+		height: 38px;
+		border: 1px solid black;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
+	.cell > p {
+		margin: 0;
 	}
 </style>
+
+<main>
+	<div class="grid" id="grid">
+		{#each Array(rows) as _, i}
+			{#each Array(cols) as _, j}
+				<div class="cell" data-x={i} data-y={j}>
+					<p>{i * rows + j}</p>
+				</div>
+			{/each}
+		{/each}
+	</div>
+</main>
