@@ -68,7 +68,6 @@ for (let i = 0; i < rows; i++) {
 	}
 }
 function countNeighbours(i: number, j: number) {
-	console.log(i, j, 0)
 	if (grid[i][j].bomb) {
 		return -1
 	}
@@ -77,7 +76,7 @@ function countNeighbours(i: number, j: number) {
 		for (let y_off = -1; y_off <= 1; y_off++) {
 			const x = i + x_off
 			const y = j + y_off
-			console.log(x, y)
+
 			if (x === -1 || y === -1 || x === rows || y === cols) continue
 			if (grid[x][y].bomb) {
 				count++
@@ -93,8 +92,23 @@ function handleClick(e) {
 	const y = parseInt(cell.block.dataset.y)
 	handleReveal(x, y)
 }
+
+function revealAll() {
+	for (let i = 0; i < rows; i++) {
+		for (let j = 0; j < cols; j++) {
+			const cell = grid[i][j]
+			cell.reveal()
+			cell.visible = true
+			cell.block.classList.add('blue')
+		}
+	}
+}
+
 function handleReveal(i: number, j: number) {
 	const cell = grid[i][j]
+	if (cell.bomb) {
+		return revealAll()
+	}
 	cell.reveal()
 	cell.block.classList.add('blue')
 	cell.visible = true
@@ -111,11 +125,9 @@ function handleReveal(i: number, j: number) {
 				if (inner_cell.neighbours === 0 && inner_cell.visible !== true) {
 					handleReveal(x, y)
 				}
-				// handleReveal(x, y)
 			}
 		}
 	}
 }
-
 
 export default app

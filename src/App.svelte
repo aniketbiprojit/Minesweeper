@@ -14,7 +14,7 @@
 	.cell {
 		width: 38px;
 		height: 38px;
-		border: 1px solid white;
+		border: 1px solid black;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -23,18 +23,19 @@
 	.cell > p {
 		margin: 0;
 		pointer-events: none;
+		color: white;
 	}
 
 	.blue {
-		background-color: rgb(153, 153, 153);
+		background-color: black;
 	}
 
 	.bomb {
-		background-color: red;
+		background-color: rgb(34, 34, 34);
 	}
 
 	.hidden {
-		background-color: rgb(68, 68, 68);
+		background-color: white;
 	}
 </style>
 
