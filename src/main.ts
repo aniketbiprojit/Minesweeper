@@ -1,15 +1,18 @@
 import type { element } from 'svelte/internal'
 import App from './App.svelte'
 
-const rows = 7
+const rows = 10
 const cols = 10
 const cell_size = 40
+
+const game_over = false
 
 const app = new App({
 	target: document.body,
 	props: {
 		rows,
 		cols,
+		handleClick,
 	},
 })
 
@@ -23,22 +26,26 @@ class Cell {
 	visible = false
 	bomb = false
 	block: HTMLElement
+	neighbours: number = 0
 	constructor(block: HTMLElement) {
 		this.block = block
 
-		if (Math.random() < 0.2) {
+		if (Math.random() < 0.1) {
 			this.bomb = true
 			this.block.classList.add('bomb')
 		}
 	}
 
 	reveal() {
-		this.visible = true
-		this.block.classList.add('revealed')
+		this.block.classList.remove('hidden')
+
+		if (this.bomb) {
+			this.setInner('')
+		} else this.setInner(this.neighbours.toString())
 	}
 
 	setInner(text: string) {
-		this.block.innerHTML = text
+		this.block.children[0].innerHTML = text
 	}
 }
 
@@ -52,6 +59,63 @@ Array.from(cells).forEach((element) => {
 	}
 })
 
-console.log(grid)
+for (let i = 0; i < rows; i++) {
+	for (let j = 0; j < cols; j++) {
+		const neighbours = countNeighbours(i, j)
+
+		const cell = grid[i][j]
+		cell.neighbours = neighbours
+	}
+}
+function countNeighbours(i: number, j: number) {
+	console.log(i, j, 0)
+	if (grid[i][j].bomb) {
+		return -1
+	}
+	let count = 0
+	for (let x_off = -1; x_off <= 1; x_off++) {
+		for (let y_off = -1; y_off <= 1; y_off++) {
+			const x = i + x_off
+			const y = j + y_off
+			console.log(x, y)
+			if (x === -1 || y === -1 || x === rows || y === cols) continue
+			if (grid[x][y].bomb) {
+				count++
+			}
+		}
+	}
+	return count
+}
+
+function handleClick(e) {
+	const cell = { block: e.target }
+	const x = parseInt(cell.block.dataset.x)
+	const y = parseInt(cell.block.dataset.y)
+	handleReveal(x, y)
+}
+function handleReveal(i: number, j: number) {
+	const cell = grid[i][j]
+	cell.reveal()
+	cell.block.classList.add('blue')
+	cell.visible = true
+
+	if (cell.neighbours === 0) {
+		for (let x_off = -1; x_off <= 1; x_off++) {
+			for (let y_off = -1; y_off <= 1; y_off++) {
+				const x = i + x_off
+				const y = j + y_off
+				if (x === -1 || y === -1 || x === rows || y === cols) continue
+				const inner_cell = grid[x][y]
+				inner_cell.reveal()
+				inner_cell.block.classList.add('blue')
+				if (inner_cell.neighbours === 0 && inner_cell.visible !== true) {
+					handleReveal(x, y)
+				}
+				// handleReveal(x, y)
+			}
+		}
+	}
+}
+
 
 export default app
